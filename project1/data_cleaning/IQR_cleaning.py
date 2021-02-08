@@ -1,8 +1,8 @@
 import pandas as pd
 
-def IQR1 (d_in, lower_bound, upper_bound):
+def IQR (d_in, lower_bound, upper_bound):
     # finding outlier functions first by getting the first and second quartile
-    # of our data -> can update .25 and .75 as needed
+    # of our data -> can update lower and upper bound as needed
     Q1 = d_in.quantile(lower_bound)
     Q3 = d_in.quantile(upper_bound)
     #Interquartile Range
