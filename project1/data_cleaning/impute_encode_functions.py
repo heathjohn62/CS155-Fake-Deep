@@ -29,5 +29,8 @@ def standardized_normalizing(in_data):
     return out_data
 
 def one_hot_encoding(in_data):
-    out_data = OneHotEncoder().fit_transform(in_data)
+    # Commented out version (using OneHotEncoder is faster but outputs numpy array
+    # out_data = OneHotEncoder().fit_transform(in_data)
+    # this version does one hot encoding and outputs a dataframe 
+    out_data = pd.get_dummies(in_data)
     return out_data
