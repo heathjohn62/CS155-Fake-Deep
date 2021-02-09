@@ -5,6 +5,7 @@ def normalize(df, feature, norm_type):
   # Inputs: dataframe df, feature of dataframe (Ex: 'STATE'), and norm_type which
   # specifies the type of normalization method to use. Possible norm types are: 
   # 'linear', 'log', 'z-score'.
+  # Returns: A NEW COPY OF THE DATAFRAMW, DOES NOT CHANGE INPUT DF.
   ndf = df.copy()
   if (norm_type == 'linear'):
     # linear scaling
@@ -19,5 +20,31 @@ def normalize(df, feature, norm_type):
     lam = ndf[feature].mean()
     devi = ndf[feature].std()
     ndf[feature] = ndf[feature].apply(lambda x: (x-lam)/devi)
+  
+  return ndf
+
+
+def normalizeALL(df, norm_type):
+  # Inputs: dataframe df and norm_type which specifies the type of 
+  # normalization method to use. Possible norm types are: 
+  # 'linear', 'log', 'z-score'.
+  # Returns: A NEW COPY OF THE DATAFRAMW, DOES NOT CHANGE INPUT DF.
+  ndf = df.copy()
+  if (norm_type == 'linear'):
+    # linear scaling
+    for col in ndf:
+      xmin = ndf[col].min()
+      xmax = ndf[col].max()
+      ndf[col] = ndf[col].apply(lambda x: (x - xmin)/(xmax - xmin))
+  elif (norm_type == 'log'):
+    for col in ndf:
+      # log scaling
+      ndf[col] = ndf[col].apply(lambda x: np.log(x))
+  elif (norm_type == 'z-score'):
+    # z-score scaling
+    for col in ndf:
+      lam = ndf[col].mean()
+      devi = ndf[col].std()
+      ndf[col] = ndf[col].apply(lambda x: (x-lam)/devi)
   
   return ndf
