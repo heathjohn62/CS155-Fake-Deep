@@ -8,7 +8,7 @@ def dbscan_cleanse(X, e=0.5, min=5):
   # eps: max distance between samples to be consider neighbors
   # min_samples: min number samples in neighborhood for point to be considered a core point.
   # Returns new dataframe. MUST ENCODE PRIOR.
-  db = DBSCAN(eps=e, min_samples=min).fit(X.values)
+  db = DBSCAN(eps=e, min_samples=min).fit(X)
 
   # Cluster labels for each point in dataset. Noisy points labeled -1.
   labels = db.labels_
@@ -27,4 +27,33 @@ def dbscan_cleanse(X, e=0.5, min=5):
     if labels[i] == -1: index_drop.append(i)
     i+=1
   new_df = X.drop(X.index[index_drop])
+
+  # plooooooooooooooooot
+  core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
+  core_samples_mask[db.core_sample_indices_] = True
+
+  import matplotlib.pyplot as plt
+
+  # Black removed and is used for noise instead.
+  labels = labels.reshape((len(labels), ))
+  unique_labels = set(labels)
+  colors = [plt.cm.Spectral(each)
+          for each in np.linspace(0, 1, len(unique_labels))]
+  for k, col in zip(unique_labels, colors):
+    if k == -1:
+        # Black used for noise.
+        col = [0, 0, 0, 1]
+
+    class_member_mask = (labels == k)
+
+    xy = X[class_member_mask & core_samples_mask]
+    plt.plot(xy.iloc[:, 0], xy.iloc[:, 1], 'o', markerfacecolor=tuple(col),
+             markeredgecolor='k', markersize=14)
+
+    xy = X[class_member_mask & ~core_samples_mask]
+    plt.plot(xy.iloc[:, 0], xy.iloc[:, 1], 'o', markerfacecolor=tuple(col),
+             markeredgecolor='k', markersize=6)
+
+  plt.title('CLUSTER REPRESENTATION USIGN DBSCAN')
+  plt.show()
   return new_df
