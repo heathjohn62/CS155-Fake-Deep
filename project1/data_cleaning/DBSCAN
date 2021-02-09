@@ -3,7 +3,7 @@ from sklearn import metrics
 from sklearn.datasets import make_blobs
 from sklearn.preprocessing import StandardScaler
 
-def dbscan_cleanse(X, e=0.5, min=5):
+def dbscan_cleanse(X, e=150, min=5):
   # Performs DBSCAN clustering with:
   # eps: max distance between samples to be consider neighbors
   # min_samples: min number samples in neighborhood for point to be considered a core point.
