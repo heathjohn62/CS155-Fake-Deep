@@ -1,0 +1,23 @@
+import numpy as np
+import pandas as pd
+
+def normalize(df, feature, norm_type):
+  # Inputs: dataframe df, feature of dataframe (Ex: 'STATE'), and norm_type which
+  # specifies the type of normalization method to use. Possible norm types are: 
+  # 'linear', 'log', 'z-score'.
+  ndf = df.copy()
+  if (norm_type == 'linear'):
+    # linear scaling
+    xmin = ndf[feature].min()
+    xmax = ndf[feature].max()
+    ndf[feature] = ndf[feature].apply(lambda x: (x - xmin)/(xmax - xmin))
+  elif (norm_type == 'log'):
+    # log scaling
+    ndf[feature] = ndf[feature].apply(lambda x: np.log(x))
+  elif (norm_type == 'z-score'):
+    # z-score scaling
+    lam = ndf[feature].mean()
+    devi = ndf[feature].std()
+    ndf[feature] = ndf[feature].apply(lambda x: (x-lam)/devi)
+  
+  return ndf
