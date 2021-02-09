@@ -5,6 +5,8 @@ from sklearn.impute import IterativeImputer
 def iterative_imputer(X, max=10, rand=0):
   # Approximates missing data using multivariate imputation method with:
   # max_iter: maximum number of iterations of imputations before halting
-  # random_state: seed of randomized selection of estimator features
+  # random_state: seed of randomized selection of estimator features.
+  # Return a numpy array.
   imp = IterativeImputer(max_iter=max, random_state=rand)
-  return imp.fit_transform(X)
+  imputed_df = pd.DataFrame(imp.fit_transform(X), columns=X.columns)
+  return imputed_df
