@@ -33,18 +33,21 @@ def normalizeALL(df, norm_type):
   if (norm_type == 'linear'):
     # linear scaling
     for col in ndf:
-      xmin = ndf[col].min()
-      xmax = ndf[col].max()
-      ndf[col] = ndf[col].apply(lambda x: (x - xmin)/(xmax - xmin))
+      if col != 'LABEL':
+        xmin = ndf[col].min()
+        xmax = ndf[col].max()
+        ndf[col] = ndf[col].apply(lambda x: (x - xmin)/(xmax - xmin))
   elif (norm_type == 'log'):
+    # log scaling
     for col in ndf:
-      # log scaling
-      ndf[col] = ndf[col].apply(lambda x: np.log(x))
+      if col != 'LABEL':
+        ndf[col] = ndf[col].apply(lambda x: np.log(x))
   elif (norm_type == 'z-score'):
     # z-score scaling
     for col in ndf:
-      lam = ndf[col].mean()
-      devi = ndf[col].std()
-      ndf[col] = ndf[col].apply(lambda x: (x-lam)/devi)
+      if col != 'LABEL':
+        lam = ndf[col].mean()
+        devi = ndf[col].std()
+        ndf[col] = ndf[col].apply(lambda x: (x-lam)/devi)
   
   return ndf
