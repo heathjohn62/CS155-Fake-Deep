@@ -1,0 +1,10 @@
+import numpy as np
+from sklearn.experimental import enable_iterative_imputer
+from sklearn.impute import IterativeImputer
+
+def iterative_imputer(X, max=10, rand=0):
+  # Approximates missing data using multivariate imputation method with:
+  # max_iter: maximum number of iterations of imputations before halting
+  # random_state: seed of randomized selection of estimator features
+  imp = IterativeImputer(max_iter=max, random_state=rand)
+  return imp.fit_transform(X)
