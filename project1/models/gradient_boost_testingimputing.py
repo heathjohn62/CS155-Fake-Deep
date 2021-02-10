@@ -3,8 +3,8 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import roc_auc_score
 import numpy
 
-train_df = pd.read_csv('train_label-enc_iter-imp20.csv', index_col='id')
-test_df = pd.read_csv('test_label-enc_iter-imp20.csv', index_col='id')
+train_df = pd.read_csv('./project1/datasets/jeh_train_label-enc_iter-imp20.csv')
+test_df = pd.read_csv('./project1/datasets/jeh_test_label-enc_iter-imp20.csv')
 
 def create_train_test(in_data, split_ratio):
     # input .7 into split_ratio to get 70/30 split
