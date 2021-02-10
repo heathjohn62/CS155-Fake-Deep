@@ -1,0 +1,10 @@
+import numpy as np
+from sklearn.impute import KNNImputer
+
+def neighbor_imputer(X, num_neigh=5, lbs='uniform'):
+  imputer = KNNImputer(n_neighbors=num_neigh, weights="uniform")
+  imputed_df = pd.DataFrame(imputer.fit_transform(X), columns=X.columns)
+  imputed_df.index += 1
+  return imputed_df
+  
+  
