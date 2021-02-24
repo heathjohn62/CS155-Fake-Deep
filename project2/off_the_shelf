@@ -1,0 +1,18 @@
+import numpy as np
+import pandas as pd
+from surprise import Reader, Dataset, SVD, accuracy
+
+# !pip install surprise
+# ***** makes sure to install surprise *****
+
+def off_the_shelf(trn_data):
+  # Matrix factorization using SVD, the surprise package
+  # Input: traning data (in form of a Dataframe)
+  # Output: factorized matrix, U and V
+  reader = Reader()
+  trn = Dataset.load_from_df(trn_data, reader)
+  trn = trn.build_full_trainset()
+  # Change bias on or off
+  alg = SVD(biased=False)
+  alg.fit(trn)
+  return alg.pu, alg.qi
