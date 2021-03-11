@@ -23,7 +23,7 @@ def trans_diagram(thresh=1e-1):
     for k in range(len(indices[0])):
       idx = i[k]
       if idx >= 3177:
-        word = flip_dict.get(idx-2)
+        continue
       else:
         word = flip_dict.get(idx)
       if word not in words:
