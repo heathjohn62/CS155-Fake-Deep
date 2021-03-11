@@ -1,0 +1,60 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+
+
+def trans_diagram(thresh=1e-1):
+  # Input: probability filter (i.e., if you want only edges to show up that
+  #        have probability grater than 2e-3, then input 2e-3)
+  # Output: graphs a transition diagram where node labels are the words
+  #         most associated with the hidden state and edge probabilities are
+  #         filtered.
+  G = nx.DiGraph()
+  aa = np.array(hmm.A)
+
+  # dictionary mapping words to numbers
+  word_map = Utility.load_word_map_hidden()[1]
+  flip_dict = dict((v,k) for k,v in word_map.items())
+
+  # Get the words most associated with each hidden state, using a 1-to-1
+  # mapping.
+  indices = get_words_from_hidden()[:,0:25]
+  words = []
+  for i in indices:
+    for k in range(len(indices[0])):
+      idx = i[k]
+      if idx >= 3177:
+        word = flip_dict.get(idx-2)
+      else:
+        word = flip_dict.get(idx)
+      if word not in words:
+        words.append(word)
+        break
+  
+  # get the edges and edges labels
+  edges = []
+  edge_labelz = {}
+  for i in range(len(aa)):
+    for j in range(len(aa[0])):
+      prob = aa[i][j]
+      if prob > thresh:
+        e = (words[i], words[j])
+        edges.append(e)
+        edge_labelz[e] = round(prob,3)
+  
+  G.add_edges_from(edges)
+  val_map = {}
+  for i in range(len(aa)):
+    val_map[str(i)] = 0
+  values = [val_map.get(node, 0.25) for node in G.nodes()]
+  # Need to create a layout when doing
+  # separate calls to draw nodes and edges
+  pos = nx.spring_layout(G)
+  nx.draw_networkx_nodes(G, pos, cmap=plt.get_cmap('jet'), 
+                       node_color = 'lightsteelblue', node_size = 200)
+  nx.draw_networkx_labels(G, pos)
+  nx.draw_networkx_edges(G, pos, edgelist=edges, edge_color='b', arrows=True)
+  # add this if you want edge labels (probability of transition)
+  # nx.draw_networkx_edge_labels(G,pos,edge_labels=edge_labelz)
+  plt.show()
+
+trans_diagram(2e-1)
